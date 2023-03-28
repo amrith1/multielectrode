@@ -544,7 +544,7 @@ def optimize_fisher_array(jac_full, probs_vec, transform_mat, T_prev, T, reg=Non
             loss = fisher_loss_array(probs_vec, transform_mat, jac_full, T_prev + jnp.absolute(T))
             loss_tuple = (loss, jnp.sum(jnp.absolute(T)), loss + reg * jnp.absolute(jnp.sum(jnp.absolute(T)) - T_budget),
                             reg * jnp.absolute(jnp.sum(jnp.absolute(T)) - T_budget))
-            print(loss_tuple)
+            print(loss_tuple, end="\r\r")
             losses += [loss_tuple]
         # print(time.time() - start_verbose)
 
@@ -568,7 +568,7 @@ def fisher_sampling_1elec(probs_empirical, T_prev, amps, w_inits_array=None, t_f
     w_inits_array: cells x patterns numpy.ndarray(dtype=object) of lists containing new initial guesses for fits
     t_final: numpy.ndarray of new optimal trial allocation
     """
-
+    print('edits made by amrith')
     print('Setting up data...')
 
     if w_inits_array is None:
@@ -668,18 +668,18 @@ def fisher_sampling_1elec(probs_empirical, T_prev, amps, w_inits_array=None, t_f
                                                     step_size=T_step_size, n_steps=T_n_steps, reg=reg, T_budget=budget,
                                                     verbose=verbose)
 
-    if verbose:
-        fig, axs = plt.subplots(1, 3, figsize=(15, 5))
-        axs[0].plot(losses[:, 0])
-        axs[0].set_ylabel('Fisher Loss (A-optimality)')
-        axs[1].plot(losses[:, 1])
-        axs[1].set_ylabel('Total Trials')
-        axs[2].plot(losses[:, 2])
-        axs[2].set_ylabel('Regularized Loss, reg=' + str(reg))
+    # if verbose:
+    #     fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+    #     axs[0].plot(losses[:, 0])
+    #     axs[0].set_ylabel('Fisher Loss (A-optimality)')
+    #     axs[1].plot(losses[:, 1])
+    #     axs[1].set_ylabel('Total Trials')
+    #     axs[2].plot(losses[:, 2])
+    #     axs[2].set_ylabel('Regularized Loss, reg=' + str(reg))
 
-        fig.tight_layout() # Or equivalently,  "plt.tight_layout()"
-        plt.savefig(f'plots_CL.png', dpi=300)
-        plt.show()
+    #     fig.tight_layout() # Or equivalently,  "plt.tight_layout()"
+    #     plt.savefig(f'plots_CL.png', dpi=300)
+    #     print("PLOT GENERATED")
 
     T_new = jnp.round(jnp.absolute(t_final), 0)
 
